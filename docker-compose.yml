@@ -1,0 +1,36 @@
+version: '2'  
+services:  
+  nginx:
+    image: nginx:latest
+    container_name: nginx_lulabs
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/src
+      - ./config/nginx:/etc/nginx/conf.d
+    depends_on:
+      - web
+  web:
+    build: .
+    container_name: django_lulabs
+    command: bash -c "./wait-for-it.sh db:5432 && python manage.py makemigrations && python manage.py migrate && gunicorn luizalabs_employee_manager.wsgi -b 0.0.0.0:8000"
+    depends_on:
+      - db
+    volumes:
+      - ./src:/src
+    expose:
+      - "8000"
+    environment:
+      DB_CONNECTION: pgsql
+      DB_HOST: postgresql
+      DB_PORT: 5432
+      DB_DATABASE: postgres
+      DB_USERNAME: postgres
+      DEBUG: "False"
+      SECRET_KEY: "+x$$q@du#gz@bkf4ow!eu6=vl0uxs&5e&slw$$&0th4+q$$n(rg%c"
+
+  db:
+    image: postgres:latest
+    container_name: postgres_lulabs
+    environment:         
+      - POSTGRES_DB=postgres
