@@ -25,9 +25,12 @@ from django.contrib.auth import views as auth_views
 
 from backend.core import urls as core_urls
 
+from rest_framework_swagger.views import get_swagger_view
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^employee/', include(core_urls)),
+    url(r'^docs/', get_swagger_view(title='Employee Manager API')),
 
     # url(r'^login/', auth_views.login, name='login'),
     # url(r'^logout/', auth_views.logout_then_login,
