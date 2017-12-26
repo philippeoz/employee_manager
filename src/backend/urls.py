@@ -23,13 +23,13 @@ from django.contrib import admin
 
 from django.contrib.auth import views as auth_views
 
-# from backend.core.urls import core_urls
+from backend.core import urls as core_urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    # url(r'^', include(core_urls)),
+    url(r'^employee/', include(core_urls)),
 
     # url(r'^login/', auth_views.login, name='login'),
     # url(r'^logout/', auth_views.logout_then_login,
-        # {'login_url': '/login'}, name='logout'),
+    #     {'login_url': '/login'}, name='logout'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
